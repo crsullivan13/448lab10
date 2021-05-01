@@ -1,0 +1,45 @@
+<html>
+    <head>
+        <title>Ban Hammer</title>
+    </head>
+    <body>
+        <?php
+        $mysqli = new mysqli("mysql.eecs.ku.edu", "connorsullivan", "ohpood3i", "connorsullivan");
+
+        if($mysqli->connection_erro) {
+            exit();
+        }
+        $query = "SELECT * FROM Posts";
+        ?>
+        <h3>Woohoo Let's Ban Some Posts!!!!</h3><br>
+
+	<form action="DeletePost.php" method="post">
+        <table style="border: 1px solid black;"><thead><tr>
+            <th style="border: 1px solid black;">Posts</th>
+            <th style="border: 1px solid black;">Authors</th>
+            <th style="border: 1px solid black;">Deletion?</th>
+        </tr></thead><tbody>
+        <?php
+        if($result = $mysqli->query($query)) {
+            while($row = $result->fetch_assoc()) {
+                $Author = $row["Author_id"];
+                $Post = $row["Content"];
+                $ID = $row["Post_id"];
+        ?>
+        <tr>
+            <td style="border: 1px solid black;"><?php echo $Post;?></td>
+            <td style="border: 1px solid black;"><?php echo $Author;?></td>
+            <td style="border: 1px solid black;"><input type="checkbox" name="ID[]" <?php echo 'value="'.$ID.'"';?>></td>
+        </tr>
+	<?php
+                }
+                $result->free();
+            }
+            $mysqli->close();
+        ?>
+        </tbody></table>
+	<br>
+	<input type="submit" value="Delete">
+	</form>
+    </body>
+</html>

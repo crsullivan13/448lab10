@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>View User Posts</title>
+    </head>
+    <body>
+        <?php
+                $mysqli = new mysqli("mysql.eecs.ku.edu", "connorsullivan", "ohpood3i", "connorsullivan");
+
+                if($mysqli->connection_erro) {
+                    exit();
+                }
+                $query = "SELECT * FROM Users";
+                ?>
+        <h1>Display a Users Posts</h1>
+        <form action="ViewUserPosts.php" method="POST">
+            <label for="Users">Choose a User</label>
+            <select name="Users" id="Users">
+                
+                <?php
+                if($result = $mysqli->query($query)) {
+                
+                    while($row = $result->fetch_assoc()) {
+                        $ID = $row["User_id"];
+                ?>
+                <option <?php echo 'value="'.$ID.'"';?>>
+                    <?php echo $ID;?>
+                </option>
+                <?php
+                    }
+                    $result->free();
+                }
+                $mysqli->close();
+                ?>
+            </select>
+	    <br>
+	    <input type="submit" value="Find Posts"><br>
+        </form>
+    </body>
+</html>
